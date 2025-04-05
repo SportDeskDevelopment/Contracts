@@ -1,0 +1,184 @@
+openapi: 3.1.0
+info:
+  title: Authentication API
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /auth/register:
+    post:
+      operationId: registerUser
+      tags:
+        - auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        "201":
+          $ref: "#/components/responses/AuthResponse"
+        "400":
+          $ref: "#/components/responses/InvalidInput"
+        "409":
+          $ref: "#/components/responses/EmailExists"
+
+  /auth/login:
+    post:
+      operationId: loginUser
+      tags:
+        - auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/AuthResponse"
+        "401":
+          $ref: "#/components/responses/InvalidCredentials"
+        "400":
+          $ref: "#/components/responses/InvalidInput"
+
+  /auth/google:
+    post:
+      operationId: googleAuth
+      tags:
+        - auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GoogleAuthRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/AuthResponse"
+        "401":
+          $ref: "#/components/responses/InvalidToken"
+        "400":
+          $ref: "#/components/responses/InvalidInput"
+
+components:
+  schemas:
+    RegisterRequest:
+      type: object
+      required:
+        - email
+        - password
+        - name
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 6
+        name:
+          type: string
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    GoogleAuthRequest:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+          description: Google ID token
+
+    User:
+      type: object
+      required:
+        - id
+        - email
+        - name
+        - activeRole
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+        activeRole:
+          type: string
+          enum: [TRAINER, TRAINEE, PARENT, ADMIN, SUPERADMIN]
+
+    AuthResponse:
+      type: object
+      required:
+        - accessToken
+        - user
+      properties:
+        accessToken:
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+
+  responses:
+    AuthResponse:
+      description: Authentication successful
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AuthResponse"
+
+    InvalidInput:
+      description: Invalid input
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Invalid input data"
+
+    InvalidCredentials:
+      description: Invalid credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Invalid email or password"
+
+    InvalidToken:
+      description: Invalid token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Invalid Google token"
+
+    EmailExists:
+      description: Email already exists
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Email already registered" 
