@@ -154,7 +154,7 @@ components:
       properties:
         role:
           type: string
-          enum: [TRAINER, TRAINEE, PARENT, ADMIN, SUPERADMIN]
+          enum: [TRAINER, TRAINEE, PARENT, ADMIN]
 
     InitializeRoleRequest:
       type: object
