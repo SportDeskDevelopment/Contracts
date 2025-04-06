@@ -19,11 +19,32 @@ paths:
               $ref: "#/components/schemas/RegisterRequest"
       responses:
         "201":
-          $ref: "#/components/responses/AuthResponse"
+          $ref: "#/components/responses/RegisterResponse"
         "400":
           $ref: "#/components/responses/InvalidInput"
         "409":
           $ref: "#/components/responses/EmailExists"
+
+  /auth/confirm-email:
+    post:
+      operationId: confirmEmail
+      tags:
+        - auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfirmEmailRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/ConfirmEmailResponse"
+        "400":
+          $ref: "#/components/responses/InvalidInput"
+        "404":
+          $ref: "#/components/responses/UserNotFound"
+        "422":
+          $ref: "#/components/responses/InvalidCode"
 
   /auth/login:
     post:
@@ -43,6 +64,19 @@ paths:
           $ref: "#/components/responses/InvalidCredentials"
         "400":
           $ref: "#/components/responses/InvalidInput"
+        "403":
+          $ref: "#/components/responses/EmailNotConfirmed"
+
+  /auth/refresh:
+    post:
+      operationId: refreshToken
+      tags:
+        - auth
+      responses:
+        "200":
+          $ref: "#/components/responses/AuthResponse"
+        "401":
+          $ref: "#/components/responses/InvalidToken"
 
   /auth/google:
     post:
@@ -63,6 +97,48 @@ paths:
         "400":
           $ref: "#/components/responses/InvalidInput"
 
+  /auth/logout:
+    post:
+      operationId: logoutUser
+      tags:
+        - auth
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Successfully logged out"
+        "401":
+          $ref: "#/components/responses/InvalidToken"
+
+  /auth/logout-all:
+    post:
+      operationId: logoutAllDevices
+      tags:
+        - auth
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Logout from all devices successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Successfully logged out from all devices"
+        "401":
+          $ref: "#/components/responses/InvalidToken"
+
 components:
   schemas:
     RegisterRequest:
@@ -80,6 +156,38 @@ components:
           minLength: 6
         name:
           type: string
+
+    RegisterResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          example: "Confirmation code sent to your email"
+
+    ConfirmEmailRequest:
+      type: object
+      required:
+        - email
+        - code
+      properties:
+        email:
+          type: string
+          format: email
+        code:
+          type: string
+          minLength: 6
+          maxLength: 6
+
+    ConfirmEmailResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          example: "Email confirmed successfully"
 
     LoginRequest:
       type: object
@@ -109,6 +217,7 @@ components:
         - email
         - name
         - activeRole
+        - isEmailConfirmed
       properties:
         id:
           type: string
@@ -119,6 +228,8 @@ components:
         activeRole:
           type: string
           enum: [TRAINER, TRAINEE, PARENT, ADMIN, SUPERADMIN]
+        isEmailConfirmed:
+          type: boolean
 
     AuthResponse:
       type: object
@@ -138,6 +249,20 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/AuthResponse"
+
+    RegisterResponse:
+      description: Registration successful
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RegisterResponse"
+
+    ConfirmEmailResponse:
+      description: Email confirmation successful
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ConfirmEmailResponse"
 
     InvalidInput:
       description: Invalid input
@@ -170,7 +295,7 @@ components:
             properties:
               message:
                 type: string
-                example: "Invalid Google token"
+                example: "Invalid token"
 
     EmailExists:
       description: Email already exists
@@ -181,4 +306,37 @@ components:
             properties:
               message:
                 type: string
-                example: "Email already registered" 
+                example: "Email already registered"
+
+    UserNotFound:
+      description: User not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "User not found"
+
+    InvalidCode:
+      description: Invalid confirmation code
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Invalid confirmation code"
+
+    EmailNotConfirmed:
+      description: Email not confirmed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Please confirm your email first" 
