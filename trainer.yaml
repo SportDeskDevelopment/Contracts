@@ -66,6 +66,83 @@ paths:
         "404":
           $ref: "#/components/responses/ProfileNotFound"
 
+  /api/trainer/scan:
+    post:
+      operationId: scanTrainee
+      tags:
+        - trainer
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScanTraineeRequest"
+      responses:
+        "200":
+          description: Trainee scan result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScanTraineeResponse"
+        "401":
+          $ref: "#/components/responses/InvalidToken"
+        "404":
+          $ref: "#/components/responses/TraineeNotFound"
+
+  /api/trainer/scan-and-create:
+    post:
+      operationId: scanAndCreateTraining
+      tags:
+        - trainer
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScanAndCreateRequest"
+      responses:
+        "200":
+          description: Training created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateTrainingResponse"
+        "401":
+          $ref: "#/components/responses/InvalidToken"
+        "404":
+          $ref: "#/components/responses/TraineeNotFound"
+
+  /api/trainer/attach-to-existing:
+    post:
+      operationId: attachToExistingTraining
+      tags:
+        - trainer
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttachToTrainingRequest"
+      responses:
+        "200":
+          description: Trainee attached successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttachToTrainingResponse"
+        "401":
+          $ref: "#/components/responses/InvalidToken"
+        "404":
+          $ref: "#/components/responses/TraineeNotFound"
+        "403":
+          $ref: "#/components/responses/InvalidTrainingAccess"
+
 components:
   schemas:
     TrainerProfileId:
@@ -100,6 +177,85 @@ components:
           type: array
           items:
             type: string
+
+    ScanTraineeRequest:
+      type: object
+      required:
+        - traineeUsername
+      properties:
+        traineeUsername:
+          type: string
+
+    ScanAndCreateRequest:
+      type: object
+      required:
+        - traineeUsername
+      properties:
+        traineeUsername:
+          type: string
+        training:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [INDIVIDUAL, GROUP]
+            date:
+              type: string
+              format: date-time
+            durationMin:
+              type: integer
+            gymId:
+              type: string
+            groupId:
+              type: string
+            templateId:
+              type: string
+
+    ScanTraineeResponse:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum: [no_active_training]
+        areTrainingsExist:
+          type: boolean
+
+    CreateTrainingResponse:
+      type: object
+      required:
+        - status
+        - trainingId
+        - traineeAdded
+      properties:
+        status:
+          type: string
+          enum: [training_created]
+        trainingId:
+          type: string
+        traineeAdded:
+          type: boolean
+
+    AttachToTrainingRequest:
+      type: object
+      required:
+        - trainingId
+        - traineeUsername
+      properties:
+        trainingId:
+          type: string
+        traineeUsername:
+          type: string
+
+    AttachToTrainingResponse:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum: [added_to_existing_training]
 
   responses:
     InvalidToken:
@@ -144,4 +300,26 @@ components:
             properties:
               message:
                 type: string
-                example: "Profile already exists" 
+                example: "Profile already exists"
+
+    TraineeNotFound:
+      description: Trainee not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Trainee not found"
+
+    InvalidTrainingAccess:
+      description: Invalid training access
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "You don't have access to this training" 

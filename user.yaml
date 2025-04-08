@@ -23,6 +23,23 @@ paths:
         "401":
           $ref: "#/components/responses/InvalidToken"
 
+  /api/users/me/onboarding:
+    get:
+      operationId: getUserOnboarding
+      tags:
+        - users
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: User onboarding status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OnboardingResponse"
+        "401":
+          $ref: "#/components/responses/InvalidToken"
+
   /api/users/me/lang:
     patch:
       operationId: updateUserLanguage
@@ -131,12 +148,21 @@ components:
           enum: [en, ua, pl]
         activeRole:
           type: string
-          enum: [TRAINER, TRAINEE, PARENT, ADMIN, SUPERADMIN]
+          enum: [TRAINER, TRAINEE, PARENT, ADMIN]
         roles:
           type: array
           items:
             type: string
-            enum: [TRAINER, TRAINEE, PARENT, ADMIN, SUPERADMIN]
+            enum: [TRAINER, TRAINEE, PARENT, ADMIN]
+
+    OnboardingResponse:
+      type: object
+      required:
+        - activeRole
+      properties:
+        activeRole:
+          type: string
+          enum: [TRAINER, TRAINEE, PARENT, ADMIN]
 
     UpdateLanguageRequest:
       type: object
