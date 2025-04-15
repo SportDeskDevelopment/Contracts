@@ -182,8 +182,11 @@ components:
       type: object
       required:
         - traineeUsername
+        - trainerId
       properties:
         traineeUsername:
+          type: string
+        trainerId:
           type: string
 
     ScanAndCreateRequest:
@@ -218,9 +221,21 @@ components:
       properties:
         status:
           type: string
-          enum: [no_active_training]
-        areTrainingsExist:
-          type: boolean
+          enum: [noActiveTraining, noTrainingFound, traineeAlreadyRecorded, traineeRecordedSuccessfully, specifyTraining]
+        trainings: 
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              type:
+                type: string
+              startDate:
+                type: string
+                format: date-time
+              name:
+                type: string
 
     CreateTrainingResponse:
       type: object
@@ -231,7 +246,7 @@ components:
       properties:
         status:
           type: string
-          enum: [training_created]
+          enum: [trainingCreated]
         trainingId:
           type: string
         traineeAdded:
