@@ -66,7 +66,7 @@ paths:
         "404":
           $ref: "#/components/responses/ProfileNotFound"
 
-  /api/trainer/scan:
+  /api/trainer/scan-qr:
     post:
       operationId: scanTrainee
       tags:
@@ -91,7 +91,7 @@ paths:
         "404":
           $ref: "#/components/responses/TraineeNotFound"
 
-  /api/trainer/scan-and-create:
+  /api/trainer/scan-qr-and-create:
     post:
       operationId: scanAndCreateTraining
       tags:
@@ -221,7 +221,7 @@ components:
       properties:
         status:
           type: string
-          enum: [noActiveTraining, noTrainingFound, traineeAlreadyRecorded, traineeRecordedSuccessfully, specifyTraining]
+          enum: [noActiveTraining, traineeAlreadyRecorded, traineeRecordedSuccessfully, specifyTraining]
         trainings: 
           type: array
           items:
