@@ -3,7 +3,7 @@ info:
   title: Trainer API
   version: 1.0.0
 servers:
-  - url: http://localhost:5000
+  - url: http://localhost:5001
 
 paths:
   /api/trainer/me:
@@ -182,11 +182,8 @@ components:
       type: object
       required:
         - traineeUsername
-        - trainerId
       properties:
         traineeUsername:
-          type: string
-        trainerId:
           type: string
 
     ScanAndCreateRequest:
