@@ -6,6 +6,35 @@ servers:
   - url: http://localhost:5001
 
 paths:
+  /api/trainer/create-trainings:
+    post:
+      operationId: createTrainings
+      tags:
+        - trainer
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTrainingsRequest"
+      responses:
+        "200":
+          description: Trainings created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Trainings created successfully"
+        "400":
+          $ref: "#/components/responses/InvalidInput"
+        "401":
+          $ref: "#/components/responses/InvalidToken"
+
   /api/trainer/create-gyms:
     post:
       operationId: createGyms
@@ -387,6 +416,55 @@ components:
         status:
           type: string
           enum: [added_to_existing_training]
+
+    CreateTrainingsRequest:
+      type: object
+      required:
+        - trainings
+        - trainerId
+      properties:
+        trainerId:
+          type: string
+          description: ID of the trainer creating the trainings
+        trainings:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrainingDto"
+          description: Array of trainings to create
+
+    TrainingDto:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Name of the training
+        type:
+          type: string
+          enum: [INDIVIDUAL, GROUP]
+          description: Type of the training
+        startDate:
+          type: string
+          format: date-time
+          description: Start date and time of the training
+        durationMin:
+          type: integer
+          description: Duration of the training in minutes
+        gymId:
+          type: string
+          description: ID of the gym where training takes place
+        groupId:
+          type: string
+          description: ID of the group for group training
+        templateId:
+          type: string
+          description: ID of the training template
+        trainerIds:
+          type: array
+          items:
+            type: string
+          description: Array of trainer IDs for the training
 
   responses:
     InvalidToken:
