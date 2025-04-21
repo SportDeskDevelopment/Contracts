@@ -147,6 +147,7 @@ components:
         - email
         - password
         - name
+        - username
       properties:
         email:
           type: string
@@ -155,6 +156,8 @@ components:
           type: string
           minLength: 6
         name:
+          type: string
+        username:
           type: string
 
     RegisterResponse:
