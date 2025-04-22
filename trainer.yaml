@@ -465,6 +465,28 @@ components:
           items:
             type: string
           description: Array of trainer IDs for the training
+        isSaveAsTemplate:
+          type: boolean
+          description: Flag to indicate if the training should be saved as a template
+        timeSlots:
+          type: array
+          description: Recurring time slots for the training
+          items:
+            type: object
+            required:
+              - dayOfTheWeek
+              - hours
+              - minutes
+            properties:
+              dayOfTheWeek:
+                type: string
+                description: Day of the week (e.g., Monday, Tuesday)
+              hours:
+                type: integer
+                description: Hour in 24h format
+              minutes:
+                type: integer
+                description: Minutes past the hour  
 
   responses:
     InvalidToken:
