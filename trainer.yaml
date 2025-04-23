@@ -98,9 +98,9 @@ paths:
 
 
   
-  /api/trainer/create-contact-info:
+  /api/trainer/persist-contact-information:
     post:
-      operationId: createContactInformation
+      operationId: persistContactInformation
       tags:
         - trainer
       security:
@@ -110,7 +110,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateContactInformation"
+              $ref: "#/components/schemas/PersistContactInformation"
       responses:
         "200":
           description: Contact information saved successfully
@@ -323,7 +323,7 @@ components:
                 items:
                   type: string
 
-    CreateContactInformation:
+    PersistContactInformation:
       type: object
       required:
         - trainerId
@@ -338,6 +338,8 @@ components:
           type: array
           items:
             type: string
+        aboutMe:
+          type: string
         socials:
           type: array
           items:
