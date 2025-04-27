@@ -398,12 +398,9 @@ components:
           items:
             type: object
             required:
-              - createdById
               - type
               - name
             properties:
-              createdById:
-                type: string
               name:
                 type: string
               maxTrainings:
