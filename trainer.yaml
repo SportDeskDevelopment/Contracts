@@ -127,6 +127,36 @@ paths:
         "401":
           $ref: "#/components/responses/InvalidToken"
 
+  
+  /api/trainer/create-subscriptions:
+    post:
+      operationId: createSubscriptions
+      tags:
+        - trainer
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSubscriptions"
+      responses:
+        "200":
+          description: Subscriptions created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Subscriptions created successfully
+        "400":
+          $ref: "#/components/responses/InvalidInput"
+        "401":
+          $ref: "#/components/responses/InvalidToken"
+
   /api/trainer/me:
     get:
       operationId: getTrainerProfile
@@ -353,6 +383,51 @@ components:
               url:
                 type: string
 
+    
+    
+    CreateSubscriptions:
+      type: object
+      required:
+        - trainerId
+        - subscriptions
+      properties:
+        trainerId:
+          type: string
+        subscriptions:
+          type: array
+          items:
+            type: object
+            required:
+              - createdById
+              - type
+              - name
+            properties:
+              createdById:
+                type: string
+              name:
+                type: string
+              maxTrainings:
+                type: integer
+              maxDays:
+                type: integer
+              price:
+                type: number
+              notes:
+                type: string
+              type:
+                type: string
+                enum: 
+                  - PERIOD
+                  - DAYS
+                  - PERIOD_AND_DAYS
+                description: Type of the subscription
+              isPublic:
+                type: boolean
+              groupIds:
+                type: array
+                items:
+                  type: string
+
     TrainerProfileId:
       type: object
       required:
@@ -520,6 +595,9 @@ components:
         templateId:
           type: string
           description: ID of the training template
+        price:
+          type: integer
+          description: Price of the training 
         trainerIds:
           type: array
           items:
