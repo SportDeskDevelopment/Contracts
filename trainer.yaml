@@ -302,7 +302,7 @@ components:
         - gyms
         - trainerId
       properties:
-        trainerId:
+        trainerUserId:
           type: string
         gyms:
           type: array
@@ -331,7 +331,7 @@ components:
         - groups
         - trainerId
       properties:
-        trainerId:
+        trainerUserId:
           type: string
         groups:
           type: array
@@ -356,9 +356,9 @@ components:
     PersistContactInformation:
       type: object
       required:
-        - trainerId
+        - trainerUserId
       properties:
-        trainerId:
+        trainerUserId:
           type: string
         emails:
           type: array
@@ -388,10 +388,10 @@ components:
     CreateSubscriptions:
       type: object
       required:
-        - trainerId
+        - trainerUserId
         - subscriptions
       properties:
-        trainerId:
+        trainerUserId:
           type: string
         subscriptions:
           type: array
@@ -555,7 +555,7 @@ components:
         - trainings
         - trainerId
       properties:
-        trainerId:
+        trainerUserId:
           type: string
           description: ID of the trainer creating the trainings
         trainings:
