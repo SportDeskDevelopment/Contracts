@@ -187,10 +187,13 @@ components:
       type: object
       required:
         - message
+        - accessToken
       properties:
         message:
           type: string
           example: "Email confirmed successfully"
+        accessToken:
+          type: string
 
     LoginRequest:
       type: object
