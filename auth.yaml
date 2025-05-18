@@ -345,4 +345,7 @@ components:
             properties:
               message:
                 type: string
-                example: "Please confirm your email first" 
+                example: "Please confirm your email first"
+              error:
+                type: string
+                enum: [EMAIL_NOT_CONFIRMED]
