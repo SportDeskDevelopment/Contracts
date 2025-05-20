@@ -154,7 +154,7 @@ components:
           format: email
         password:
           type: string
-          minLength: 6
+          # minLength: 6
         name:
           type: string
         username:
