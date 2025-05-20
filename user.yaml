@@ -136,6 +136,12 @@ components:
         - preferredLang
         - activeRole
         - roles
+        - trainerProfile
+        - traineeProfile
+        - parentProfile
+        - trainerStepsLeft
+        - traineeStepsLeft
+        - parentStepsLeft
       properties:
         id:
           type: string
@@ -145,7 +151,7 @@ components:
           type: string
         preferredLang:
           type: string
-          enum: [en, ua, pl]
+          enum: [EN, UA, PL]
         activeRole:
           type: string
           enum: [TRAINER, TRAINEE, PARENT, ADMIN]
@@ -154,11 +160,60 @@ components:
           items:
             type: string
             enum: [TRAINER, TRAINEE, PARENT, ADMIN]
-        trainerOnboardingLeft:
+        trainerStepsLeft:
           type: array
           items:
             type: string
-            enum: [gymCreation, groupCreation, subscriptionCreation, trainingCreation, contactInformationCreation, traineeCreation]
+        traineeStepsLeft:
+          type: array
+          items:
+            type: string
+        parentStepsLeft:
+          type: array
+          items:
+            type: string
+        trainerProfile:
+          $ref: "#/components/schemas/TrainerProfile"
+        traineeProfile:
+          $ref: "#/components/schemas/TraineeProfile"
+        parentProfile:
+          $ref: "#/components/schemas/ParentProfile"
+
+    TrainerProfile:
+      type: object
+      properties:
+        gyms:
+          type: array
+          items:
+            type: string
+        groups:
+          type: array
+          items:
+            type: string
+        trainings:
+          type: array
+          items:
+            type: string
+        isOnboardingCompleted:
+          type: boolean
+        subscriptions:
+          type: array
+          items:
+            type: string
+
+    # TODO: add other fields
+    TraineeProfile:
+      type: object
+      properties:
+        isOnboardingCompleted:
+          type: boolean
+
+    # TODO: add other fields
+    ParentProfile:
+      type: object
+      properties:
+        isOnboardingCompleted:
+          type: boolean
 
     OnboardingResponse:
       type: object
