@@ -164,11 +164,14 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         traineeStepsLeft:
           type: array
           items:
             type: string
+          nullable: true
         parentStepsLeft:
+          nullable: true
           type: array
           items:
             type: string
@@ -180,6 +183,7 @@ components:
           $ref: "#/components/schemas/ParentProfile"
 
     TrainerProfile:
+      nullable: true
       type: object
       properties:
         gyms:
@@ -203,6 +207,7 @@ components:
 
     # TODO: add other fields
     TraineeProfile:
+      nullable: true
       type: object
       properties:
         isOnboardingCompleted:
@@ -210,6 +215,7 @@ components:
 
     # TODO: add other fields
     ParentProfile:
+      nullable: true
       type: object
       properties:
         isOnboardingCompleted:
