@@ -13,12 +13,12 @@ paths:
         - trainer
       security:
         - bearerAuth: []
-      parameters:
-        - $ref: "#/components/parameters/Page"
-        - $ref: "#/components/parameters/Limit"
-        - $ref: "#/components/parameters/Search"
-        - $ref: "#/components/parameters/SortOrder"
-        - $ref: "#/components/parameters/GetListFilters"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetListRequest"
       responses:
         "200":
           description: Trainings retrieved successfully
@@ -78,7 +78,7 @@ components:
           enum: [asc, desc]
           default: "desc"
         filters:
-          $ref: "#/components/schemas/GetListFilters"
+          type: object
 
     GetListFilters:
       type: object
@@ -98,10 +98,7 @@ components:
         startDate:
           type: string
           format: date-time
-        # endDate:
-        #   type: string
-        #   format: date-time
-    
+
     GetListResponse:
       type: object
       required:
