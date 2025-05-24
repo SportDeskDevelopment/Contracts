@@ -146,7 +146,7 @@ components:
       required:
         - email
         - password
-        - name
+        - firstName
         - username
       properties:
         email:
@@ -155,7 +155,9 @@ components:
         password:
           type: string
           # minLength: 6
-        name:
+        firstName:
+          type: string
+        lastName:
           type: string
         username:
           type: string

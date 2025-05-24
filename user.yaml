@@ -132,7 +132,6 @@ components:
       required:
         - id
         - email
-        - name
         - preferredLang
         - activeRole
         - roles
@@ -147,7 +146,9 @@ components:
           type: string
         email:
           type: string
-        name:
+        firstName:
+          type: string
+        lastName:
           type: string
         preferredLang:
           type: string
