@@ -65,7 +65,6 @@ paths:
         "401":
           $ref: "#/components/responses/InvalidToken"
 
-
   /api/trainer/create-groups:
     post:
       operationId: createGroups
@@ -96,8 +95,6 @@ paths:
         "401":
           $ref: "#/components/responses/InvalidToken"
 
-
-  
   /api/trainer/persist-contact-information:
     post:
       operationId: persistContactInformation
@@ -127,7 +124,6 @@ paths:
         "401":
           $ref: "#/components/responses/InvalidToken"
 
-  
   /api/trainer/create-subscriptions:
     post:
       operationId: createSubscriptions
@@ -383,8 +379,6 @@ components:
               url:
                 type: string
 
-    
-    
     CreateSubscriptions:
       type: object
       required:
@@ -688,4 +682,38 @@ components:
             properties:
               message:
                 type: string
-                example: "You don't have access to this training"
+  
+  parameters:
+    PageParam:
+      name: page
+      in: query
+      description: Page number
+      required: true
+      schema:
+        type: string
+        default: "1"
+    LimitParam:
+      name: limit
+      in: query
+      description: Limit number of trainings per page
+      required: true
+      schema:
+        type: string
+        default: "10"
+    SearchParam:
+      name: search
+      in: query
+      description: Search query
+      required: false
+      schema:
+        type: string
+        default: ""
+    SortOrderParam:
+      name: sortOrder
+      in: query
+      description: Sort order
+      required: false
+      schema:
+        type: string
+        enum: [asc, desc]
+        default: "desc"
