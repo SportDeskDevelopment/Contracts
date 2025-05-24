@@ -93,11 +93,16 @@ components:
     
     GetListResponse:
       type: object
+      required:
+        - trainings
+        - total
       properties:
         trainings:
           type: array
           items:
             $ref: "#/components/schemas/TrainingDto"
+        total:
+          type: integer
 
   responses:
     InvalidToken:
