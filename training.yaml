@@ -7,7 +7,7 @@ servers:
 
 paths:
    /api/training/get-list:
-    post:
+    get:
       operationId: getList
       tags:
         - trainer
