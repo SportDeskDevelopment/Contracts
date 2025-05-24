@@ -1,0 +1,156 @@
+openapi: 3.0.0
+info:
+  title: Training API
+  version: 1.0.0
+servers:
+  - url: http://localhost:5001
+
+paths:
+   /api/training/get-list:
+    post:
+      operationId: getList
+      tags:
+        - trainer
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Search"
+        - $ref: "#/components/parameters/SortOrder"
+        - $ref: "#/components/parameters/GetListFilters"
+      responses:
+        "200":
+          description: Trainings retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetListResponse"
+        "401":
+          $ref: "#/components/responses/InvalidToken"
+        
+components:
+  schemas:
+    TrainingDto:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        durationMin:
+          type: integer
+        price:
+          type: integer
+
+    GetListRequest:
+      type: object
+      properties:
+        page:
+          type: integer
+          default: 1
+        limit:
+          type: integer
+          default: 10
+        search:
+          type: string
+          default: ""
+        sortBy:
+          type: string
+          enum: [id, name, startDate]
+          default: "id"
+        sortOrder:
+          type: string
+          enum: [asc, desc]
+          default: "desc"
+        filters:
+          $ref: "#/components/schemas/GetListFilters"
+
+    GetListFilters:
+      type: object
+      properties:
+        gymIds:
+          type: array
+          items:
+            type: string
+        groupIds:
+          type: array
+          items:
+            type: string
+        trainerIds:
+          type: array
+          items:
+            type: string
+        startDate:
+          type: string
+          format: date-time
+        # endDate:
+        #   type: string
+        #   format: date-time
+    
+    GetListResponse:
+      type: object
+      properties:
+        trainings:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrainingDto"
+
+  responses:
+    InvalidToken:
+      description: Invalid token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Invalid token"
+
+  parameters:
+    Page:
+      name: page
+      in: query
+      description: Page number
+      schema:
+        type: integer
+        default: 1
+
+    Limit:
+      name: limit
+      in: query
+      description: Limit number of trainings per page
+      schema:
+        type: integer
+        default: 10
+
+    Search:
+      name: search
+      in: query
+      description: Search query
+      required: false
+      schema:
+        type: string
+        default: ""
+
+    SortOrder:
+      name: sortOrder
+      in: query
+      description: Sort order
+      required: false
+      schema:
+        type: string
+        enum: [asc, desc]
+        default: "desc"
+
+    GetListFilters:
+      name: filters
+      in: query
+      description: Filters
+      required: false
+      schema:
+        $ref: "#/components/schemas/GetListFilters"
